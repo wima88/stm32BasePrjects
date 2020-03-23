@@ -1,9 +1,0 @@
-with_lcd\bitmapdatabase.o: ../touchgfx/generated/images/src/bitmapdatabase.cpp
-with_lcd\bitmapdatabase.o: ../middlewares/st/touchgfx/touchgfx/framework/include/touchgfx/Bitmap.hpp
-with_lcd\bitmapdatabase.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\cassert
-with_lcd\bitmapdatabase.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\assert.h
-with_lcd\bitmapdatabase.o: ../middlewares/st/touchgfx/touchgfx/framework/include/touchgfx/hal/Types.hpp
-with_lcd\bitmapdatabase.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-with_lcd\bitmapdatabase.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\assert.h
-with_lcd\bitmapdatabase.o: ../middlewares/st/touchgfx/touchgfx/framework/include/touchgfx/hal/Config.hpp
-with_lcd\bitmapdatabase.o: ../TouchGFX/generated/images/include/BitmapDatabase.hpp
