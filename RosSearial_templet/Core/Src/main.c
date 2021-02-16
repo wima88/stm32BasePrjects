@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "maincpp.h"
+#include "xl480.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,7 +56,9 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4
 };
 /* USER CODE BEGIN PV */
-
+//uint8_t rx_buffer[64];
+uint8_t tx_buffer[64] = {0xFF,0xFF,0xFD,0x00,0XFE,0x03,0x00,0x01,0x31,0x42};
+//uint8_t tx_[64] ;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -107,7 +110,13 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-  setup();
+
+
+  xl480_int(&huart3);
+  //setup();
+  //HAL_UART_Receive_DMA(&huart3, rx_buffer, 64);
+  //HAL_HalfDuplex_EnableReceiver(&huart3);
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -252,6 +261,7 @@ static void MX_USART3_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART3_Init 2 */
+  __HAL_UART_ENABLE_IT(&huart3, UART_IT_IDLE);
 
   /* USER CODE END USART3_Init 2 */
 
@@ -324,7 +334,13 @@ void StartDefaultTask(void *argument)
   for(;;)
   {
 	  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-	  loop();
+
+	 // HAL_HalfDuplex_EnableTransmitter(&huart3);
+	 // HAL_UART_Transmit(&huart3, tx_buffer, 10, 100);
+	 // HAL_HalfDuplex_EnableReceiver(&huart3);
+	  xl480_writebuffer(tx_buffer);
+
+	  //loop();
 
     osDelay(500);
   }

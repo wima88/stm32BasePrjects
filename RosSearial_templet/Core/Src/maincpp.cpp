@@ -41,6 +41,7 @@ void loop(void)
 {
   str_msg.data = hello;
   chatter.publish(&str_msg);
+  nh.loginfo("[ID01] ping ..");
   nh.spinOnce();
 
 }
