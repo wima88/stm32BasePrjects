@@ -29,7 +29,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+struct prsRxData readData[2];
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -53,11 +53,13 @@ osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
   .priority = (osPriority_t) osPriorityNormal,
-  .stack_size = 128 * 4
+  .stack_size = 256 * 4
 };
 /* USER CODE BEGIN PV */
 //uint8_t rx_buffer[64];
-uint8_t tx_buffer[64] = {0xFF,0xFF,0xFD,0x00,0XFE,0x03,0x00,0x01,0x31,0x42};
+uint8_t tx_buffer[64] = {0xFF,0xFF,0xFD,0x00,0X01,0x03,0x00,0x01,0x19,0x4E};
+uint8_t tx_buffer_1[64] = {0xFF,0xFF,0xFD,0x00,0X01,0x07,0x00,0x02,0x84,0x00,0x04,0x00,0x1D,0x15};
+
 //uint8_t tx_[64] ;
 /* USER CODE END PV */
 
@@ -338,7 +340,11 @@ void StartDefaultTask(void *argument)
 	 // HAL_HalfDuplex_EnableTransmitter(&huart3);
 	 // HAL_UART_Transmit(&huart3, tx_buffer, 10, 100);
 	 // HAL_HalfDuplex_EnableReceiver(&huart3);
-	  xl480_writebuffer(tx_buffer);
+	/*  xl480_writebuffer(tx_buffer,10);
+	  readData[0] = xl480_readbuffer();
+	  xl480_writebuffer(tx_buffer_1,14);
+	  readData[1] = xl480_readbuffer();*/
+	  xl480_ping(01);
 
 	  //loop();
 

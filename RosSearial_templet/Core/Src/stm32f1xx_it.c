@@ -65,6 +65,7 @@ extern TIM_HandleTypeDef htim1;
 
 /* USER CODE BEGIN EV */
 extern uint8_t rx_buffer[64];
+struct rxData _data;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -243,8 +244,11 @@ void USART3_IRQHandler(void)
 {
   /* USER CODE BEGIN USART3_IRQn 0 */
 	if (__HAL_UART_GET_FLAG(&huart3, UART_FLAG_RXNE) == RESET) {
-		__HAL_UART_CLEAR_IDLEFLAG(&huart3);
 		HAL_UART_DMAStop(&huart3) ;
+		_data.dataSize  = MAX_DATA_LENGTH - __HAL_DMA_GET_COUNTER(&hdma_usart3_rx);
+		memcpy(_data.data,rx_buffer,_data.dataSize);
+		xl480_setRxData(&_data);
+		__HAL_UART_CLEAR_IDLEFLAG(&huart3);
 		HAL_UART_Receive_DMA(&huart3, rx_buffer, 64);
 	}
   /* USER CODE END USART3_IRQn 0 */
