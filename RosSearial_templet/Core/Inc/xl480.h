@@ -58,7 +58,7 @@ uint16_t update_crc(uint16_t crc_accum, uint8_t *data_blk_ptr, uint16_t data_blk
 void __itCallback();// need to populate later
 
 /*--------api functions--------*/
-void xl480_ping(uint8_t ID);
+bool xl480_ping(uint8_t ID);
 
 /*-----geters and setters-----*/
 void xl480_setRxData(struct rxData *data);

@@ -115,7 +115,7 @@ int main(void)
 
 
   xl480_int(&huart3);
-  //setup();
+  setup();
   //HAL_UART_Receive_DMA(&huart3, rx_buffer, 64);
   //HAL_HalfDuplex_EnableReceiver(&huart3);
 
@@ -329,29 +329,7 @@ static void MX_GPIO_Init(void)
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
-{
-  /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {
-	  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 
-	 // HAL_HalfDuplex_EnableTransmitter(&huart3);
-	 // HAL_UART_Transmit(&huart3, tx_buffer, 10, 100);
-	 // HAL_HalfDuplex_EnableReceiver(&huart3);
-	/*  xl480_writebuffer(tx_buffer,10);
-	  readData[0] = xl480_readbuffer();
-	  xl480_writebuffer(tx_buffer_1,14);
-	  readData[1] = xl480_readbuffer();*/
-	  xl480_ping(01);
-
-	  //loop();
-
-    osDelay(500);
-  }
-  /* USER CODE END 5 */
-}
 
  /**
   * @brief  Period elapsed callback in non blocking mode

@@ -1,20 +1,5 @@
 Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
- ../Middlewares/Third_Party/RosSerial/Inc/ros.h \
- ../Middlewares/Third_Party/RosSerial/Inc/ros/node_handle.h \
- ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/Time.h \
- ../Middlewares/Third_Party/RosSerial/Inc/ros/msg.h \
- ../Middlewares/Third_Party/RosSerial/Inc/ros/time.h \
- ../Middlewares/Third_Party/RosSerial/Inc/ros/duration.h \
- ../Middlewares/Third_Party/RosSerial/Inc/rosserial_msgs/TopicInfo.h \
- ../Middlewares/Third_Party/RosSerial/Inc/rosserial_msgs/Log.h \
- ../Middlewares/Third_Party/RosSerial/Inc/rosserial_msgs/RequestParam.h \
- ../Middlewares/Third_Party/RosSerial/Inc/ros/publisher.h \
- ../Middlewares/Third_Party/RosSerial/Inc/ros/node_handle.h \
- ../Middlewares/Third_Party/RosSerial/Inc/ros/subscriber.h \
- ../Middlewares/Third_Party/RosSerial/Inc/ros/service_server.h \
- ../Middlewares/Third_Party/RosSerial/Inc/ros/service_client.h \
- ../Middlewares/Third_Party/RosSerial/Inc/STM32Hardware.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
+ ../Core/Inc/xl480.h ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
  ../Core/Inc/stm32f1xx_hal_conf.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h \
@@ -39,39 +24,36 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
+ ../Core/Inc/main.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
+ ../Core/Inc/FreeRTOSConfig.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3/portmacro.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/ros.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/ros/node_handle.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/Time.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/ros/msg.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/ros/time.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/ros/duration.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/rosserial_msgs/TopicInfo.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/rosserial_msgs/Log.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/rosserial_msgs/RequestParam.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/ros/publisher.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/ros/node_handle.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/ros/subscriber.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/ros/service_server.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/ros/service_client.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/STM32Hardware.h \
  ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/String.h
 
 ../Core/Inc/maincpp.h:
 
-../Middlewares/Third_Party/RosSerial/Inc/ros.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/ros/node_handle.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/std_msgs/Time.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/ros/msg.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/ros/time.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/ros/duration.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/rosserial_msgs/TopicInfo.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/rosserial_msgs/Log.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/rosserial_msgs/RequestParam.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/ros/publisher.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/ros/node_handle.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/ros/subscriber.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/ros/service_server.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/ros/service_client.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/STM32Hardware.h:
+../Core/Inc/xl480.h:
 
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 
@@ -122,5 +104,55 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:
 
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:
+
+../Core/Inc/main.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
+
+../Core/Inc/FreeRTOSConfig.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3/portmacro.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/ros.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/ros/node_handle.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/std_msgs/Time.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/ros/msg.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/ros/time.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/ros/duration.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/rosserial_msgs/TopicInfo.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/rosserial_msgs/Log.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/rosserial_msgs/RequestParam.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/ros/publisher.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/ros/node_handle.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/ros/subscriber.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/ros/service_server.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/ros/service_client.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/STM32Hardware.h:
 
 ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/String.h:

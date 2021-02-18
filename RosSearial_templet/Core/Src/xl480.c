@@ -98,7 +98,7 @@ uint16_t update_crc(uint16_t crc_accum, uint8_t *data_blk_ptr, uint16_t data_blk
 
 
 /*---------api functions----------*/
-void xl480_ping(uint8_t ID)
+bool xl480_ping(uint8_t ID)
 {
 	uint8_t __buffer[10] = {0xFF,0xFF,0xFD,0x00,0X00,0x03,0x00,0x01,0x00,0x00};
 	__buffer[4] = ID;
@@ -107,6 +107,18 @@ void xl480_ping(uint8_t ID)
 	__buffer[8] = (crc & 0x00FF);
 
 	xl480_writebuffer(__buffer,10);
+
+	struct prsRxData _data;
+	_data = xl480_readbuffer();
+
+		if(_data.crc_check && (!_data.errorFlag))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 
 
 }

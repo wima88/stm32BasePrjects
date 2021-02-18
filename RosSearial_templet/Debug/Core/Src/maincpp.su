@@ -36,10 +36,10 @@ String.h:23:17:virtual int std_msgs::String::serialize(unsigned char*) const	24	
 String.h:34:17:virtual int std_msgs::String::deserialize(unsigned char*)	32	static
 String.h:49:18:virtual const char* std_msgs::String::getType()	16	static
 String.h:50:18:virtual const char* std_msgs::String::getMD5()	16	static
-maincpp.cpp:21:6:void HAL_UART_TxCpltCallback(UART_HandleTypeDef*)	16	static
-maincpp.cpp:25:6:void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)	16	static
-maincpp.cpp:29:6:void setup()	8	static
-maincpp.cpp:40:6:void loop()	8	static
+maincpp.cpp:22:6:void HAL_UART_TxCpltCallback(UART_HandleTypeDef*)	16	static
+maincpp.cpp:26:6:void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)	16	static
+maincpp.cpp:30:6:void setup()	8	static
+maincpp.cpp:64:6:void StartDefaultTask(void*)	16	static
 msg.h:129:15:static void ros::Msg::varToArr(A, V) [with A = unsigned char*; V = long unsigned int]	24	static
 msg.h:137:15:static void ros::Msg::arrToVar(V&, A) [with V = long unsigned int; A = unsigned char*]	24	static
 node_handle.h:50:7:constexpr ros::NodeHandleBase_::NodeHandleBase_()	16	static
@@ -50,12 +50,12 @@ node_handle.h:363:16:bool ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLIS
 node_handle.h:212:15:int ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::spinOnce() [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	24	static
 node_handle.h:565:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::loginfo(const char*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	16	static
 node_handle.h:415:8:bool ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::advertise(ros::Publisher&) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	24	static
-node_handle.h:372:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::requestSyncTime() [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	32	static
 node_handle.h:480:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::negotiateTopics() [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	56	static
+node_handle.h:372:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::requestSyncTime() [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	32	static
 node_handle.h:379:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::syncTime(uint8_t*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	32	static
 node_handle.h:552:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::log(char, const char*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	40	static
 node_handle.h:511:15:int ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::publish(int, const ros::Msg*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	40	static
 node_handle.h:402:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::setNow(ros::Time&) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	24	static
 node_handle.h:573:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::logerror(const char*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	16	static
-maincpp.cpp:47:1:void __static_initialization_and_destruction_0(int, int)	16	static
-maincpp.cpp:47:1:cpp)	8	static
+maincpp.cpp:74:1:void __static_initialization_and_destruction_0(int, int)	16	static
+maincpp.cpp:74:1:cpp)	8	static

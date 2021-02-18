@@ -13,8 +13,13 @@
  extern "C" {
 #endif
 
+#include "xl480.h"
+#include "stm32f1xx_hal.h"
+#include "main.h"
+#include "cmsis_os.h"
+
 void setup(void);
-void loop(void);
+void StartDefaultTask(void *argument);
 
 #ifdef __cplusplus
 }
