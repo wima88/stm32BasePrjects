@@ -59,6 +59,7 @@
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 extern DMA_HandleTypeDef hdma_usart3_rx;
+extern DMA_HandleTypeDef hdma_usart3_tx;
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart3;
 extern TIM_HandleTypeDef htim1;
@@ -167,6 +168,20 @@ void DebugMon_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles DMA1 channel2 global interrupt.
+  */
+void DMA1_Channel2_IRQHandler(void)
+{
+  /* USER CODE BEGIN DMA1_Channel2_IRQn 0 */
+
+  /* USER CODE END DMA1_Channel2_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_usart3_tx);
+  /* USER CODE BEGIN DMA1_Channel2_IRQn 1 */
+
+  /* USER CODE END DMA1_Channel2_IRQn 1 */
+}
+
+/**
   * @brief This function handles DMA1 channel3 global interrupt.
   */
 void DMA1_Channel3_IRQHandler(void)
@@ -243,18 +258,19 @@ void USART1_IRQHandler(void)
 void USART3_IRQHandler(void)
 {
   /* USER CODE BEGIN USART3_IRQn 0 */
-	if (__HAL_UART_GET_FLAG(&huart3, UART_FLAG_RXNE) == RESET) {
-		HAL_UART_DMAStop(&huart3) ;
-		_data.dataSize  = MAX_DATA_LENGTH - __HAL_DMA_GET_COUNTER(&hdma_usart3_rx);
-		memcpy(_data.data,rx_buffer,_data.dataSize);
-		xl480_setRxData(&_data);
-		__HAL_UART_CLEAR_IDLEFLAG(&huart3);
-		HAL_UART_Receive_DMA(&huart3, rx_buffer, 64);
-	}
+
   /* USER CODE END USART3_IRQn 0 */
   HAL_UART_IRQHandler(&huart3);
   /* USER CODE BEGIN USART3_IRQn 1 */
-
+	if (__HAL_UART_GET_FLAG(&huart3, UART_FLAG_RXNE) == RESET) {
+		__HAL_UART_CLEAR_IDLEFLAG(&huart3);
+		HAL_UART_DMAStop(&huart3) ;
+		_data.dataSize  = MAX_DATA_LENGTH - __HAL_DMA_GET_COUNTER(&hdma_usart3_rx);
+		memcpy(_data.data,rx_buffer,_data.dataSize);
+		xl430_setRxData(&_data);
+		__HAL_UART_CLEAR_IDLEFLAG(&huart3);
+		HAL_UART_Receive_DMA(&huart3, rx_buffer, 64);
+	}
   /* USER CODE END USART3_IRQn 1 */
 }
 

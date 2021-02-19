@@ -1,23 +1,25 @@
 /*
- * xl480.h
+ * xl430.h
  *
  *  Created on: Feb 16, 2021
  *      Author: Wimansha
  */
 
-#ifndef INC_XL480_H_
-#define INC_XL480_H_
+#ifndef INC_XL430_H_
+#define INC_XL430_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include "stm32f1xx_hal.h"
+
 #include <string.h>
 #include <stdbool.h>
 
 #define MAX_DATA_LENGTH 64
 #define DEVICES_CONNECT 2
+
 
 UART_HandleTypeDef _huart;
 uint8_t rx_buffer[MAX_DATA_LENGTH];
@@ -51,20 +53,27 @@ struct txData {
 struct rxData _rxData;
 
 /*---------core functions-------*/
-void xl480_int(UART_HandleTypeDef *huart);
-void xl480_writebuffer(uint8_t * dataBuf, uint16_t data_length);
-struct prsRxData xl480_readbuffer();
+void xl430_int(UART_HandleTypeDef *huart);
+void xl430_writebuffer(uint8_t * dataBuf, uint16_t data_length);
+struct prsRxData xl430_readbuffer();
 uint16_t update_crc(uint16_t crc_accum, uint8_t *data_blk_ptr, uint16_t data_blk_size);
 void __itCallback();// need to populate later
 
 /*--------api functions--------*/
-bool xl480_ping(uint8_t ID);
+bool xl430_ping(uint8_t ID);
+void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const uint8_t *__inst);
+void xl_480_setSpeed(int left_speed,int right_speed);
 
 /*-----geters and setters-----*/
-void xl480_setRxData(struct rxData *data);
+void xl430_setRxData(struct rxData *data);
+
+
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* INC_XL480_H_ */
+
+
+#endif /* INC_xl430_H_ */

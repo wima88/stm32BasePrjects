@@ -24,7 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "maincpp.h"
-#include "xl480.h"
+#include "xl430.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,13 +48,14 @@ UART_HandleTypeDef huart3;
 DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart1_tx;
 DMA_HandleTypeDef hdma_usart3_rx;
+DMA_HandleTypeDef hdma_usart3_tx;
 
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
   .priority = (osPriority_t) osPriorityNormal,
-  .stack_size = 256 * 4
+  .stack_size = 512 * 4
 };
 /* USER CODE BEGIN PV */
 //uint8_t rx_buffer[64];
@@ -114,7 +116,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 
-  xl480_int(&huart3);
+  xl430_int(&huart3);
   setup();
   //HAL_UART_Receive_DMA(&huart3, rx_buffer, 64);
   //HAL_HalfDuplex_EnableReceiver(&huart3);
@@ -160,6 +162,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  //setup_dummy();
+	  //HAL_Delay(250);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -264,6 +268,7 @@ static void MX_USART3_UART_Init(void)
   }
   /* USER CODE BEGIN USART3_Init 2 */
   __HAL_UART_ENABLE_IT(&huart3, UART_IT_IDLE);
+  __HAL_UART_ENABLE_IT(&huart3, UART_IT_TC);
 
   /* USER CODE END USART3_Init 2 */
 
@@ -279,6 +284,9 @@ static void MX_DMA_Init(void)
   __HAL_RCC_DMA1_CLK_ENABLE();
 
   /* DMA interrupt init */
+  /* DMA1_Channel2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
   /* DMA1_Channel3_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
@@ -329,7 +337,6 @@ static void MX_GPIO_Init(void)
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-
 
  /**
   * @brief  Period elapsed callback in non blocking mode

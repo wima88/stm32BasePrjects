@@ -1,28 +1,30 @@
 /*
- * xl480.c
+ * xl430.c
  *
  *  Created on: Feb 16, 2021
  *      Author: Wimansha
  */
 
-#include "xl480.h"
+#include "xl430.h"
+#include "xl430_address.h"
 
 
-void xl480_int(UART_HandleTypeDef *huart)
+void xl430_int(UART_HandleTypeDef *huart)
 {
 	_huart = *huart;
 	HAL_UART_Receive_DMA(&_huart, rx_buffer, 64);
 	HAL_HalfDuplex_EnableReceiver(&_huart);
 }
 
-void xl480_writebuffer(uint8_t * dataBuf,uint16_t data_length)
+void xl430_writebuffer(uint8_t * dataBuf,uint16_t data_length)
 {
 	HAL_HalfDuplex_EnableTransmitter(&_huart);
 	HAL_UART_Transmit(&_huart, dataBuf, data_length, 100);
 	HAL_HalfDuplex_EnableReceiver(&_huart);
+
 }
 
-struct prsRxData xl480_readbuffer()
+struct prsRxData xl430_readbuffer()
 {
 	struct prsRxData _retData;
 	_retData.id 		= _rxData.data[4];
@@ -98,7 +100,7 @@ uint16_t update_crc(uint16_t crc_accum, uint8_t *data_blk_ptr, uint16_t data_blk
 
 
 /*---------api functions----------*/
-bool xl480_ping(uint8_t ID)
+bool xl430_ping(uint8_t ID)
 {
 	uint8_t __buffer[10] = {0xFF,0xFF,0xFD,0x00,0X00,0x03,0x00,0x01,0x00,0x00};
 	__buffer[4] = ID;
@@ -106,10 +108,10 @@ bool xl480_ping(uint8_t ID)
 	__buffer[9] = (crc>>8) & 0x00FF;
 	__buffer[8] = (crc & 0x00FF);
 
-	xl480_writebuffer(__buffer,10);
+	xl430_writebuffer(__buffer,10);
 
 	struct prsRxData _data;
-	_data = xl480_readbuffer();
+	_data = xl430_readbuffer();
 
 		if(_data.crc_check && (!_data.errorFlag))
 		{
@@ -123,7 +125,67 @@ bool xl480_ping(uint8_t ID)
 
 }
 
-void xl480_setRxData(struct rxData *data)
+void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const uint8_t *__inst)
+{
+	  uint16_t mem_size=12;
+	  uint16_t crc;
+	  char crc_[2];
+	  uint8_t data_size =4;
+	  uint8_t data_array[4];
+
+
+
+	  data_array[0] = tx_data & 0x000000FF;
+	  data_array[1] = (tx_data>>8) & 0x000000FF;
+	  data_array[2] = (tx_data>>16) & 0x000000FF;
+	  data_array[3] = (tx_data>>24) & 0x000000FF;
+
+	  mem_size += data_size;
+	  uint8_t m_tx_buffer [mem_size];
+	  uint16_t m_len =data_size+5;
+
+
+	  memcpy (m_tx_buffer,header,6);
+	  memcpy (m_tx_buffer+sizeof(header),&Id,1);
+	  memcpy (m_tx_buffer+sizeof(header)+1,&m_len,2);
+	  memcpy (m_tx_buffer+sizeof(header)+3,__inst,1);
+	  memcpy (m_tx_buffer+sizeof(header)+4,address,2);
+	  memcpy (m_tx_buffer+sizeof(header)+6,data_array,data_size);
+
+	  crc = update_crc(0,m_tx_buffer,mem_size -2);
+	  crc_[0]=crc & 0x00FF;
+	  crc_[1]=(crc>>8) & 0x00FF;
+	  memcpy (m_tx_buffer+sizeof(header)+6+data_size,crc_,2);
+
+	    xl430_writebuffer(m_tx_buffer,sizeof(m_tx_buffer));
+
+
+
+}
+
+void xl430_Action()
+{
+
+
+  uint16_t crc;
+
+  uint16_t m_len = 3;
+  uint8_t m_tx_buffer[10];
+  memcpy (m_tx_buffer,header,6);
+  memcpy (m_tx_buffer+sizeof(header),servo_ID+2,1);
+  memcpy (m_tx_buffer+sizeof(header)+1,&m_len,2);
+  memcpy (m_tx_buffer+sizeof(header)+3,&ACTION,1);
+  crc = update_crc(0,m_tx_buffer,8);
+
+  memcpy (m_tx_buffer+sizeof(header)+4,&crc,2);
+
+  xl430_writebuffer(m_tx_buffer,sizeof(m_tx_buffer));
+
+}
+
+
+
+void xl430_setRxData(struct rxData *data)
 {
 	_rxData = *data;
 	memset(rx_buffer,0,data->dataSize);

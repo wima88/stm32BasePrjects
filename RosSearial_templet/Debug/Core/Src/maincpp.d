@@ -1,5 +1,5 @@
 Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
- ../Core/Inc/xl480.h ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
+ ../Core/Inc/xl430.h ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
  ../Core/Inc/stm32f1xx_hal_conf.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h \
@@ -49,11 +49,12 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
  ../Middlewares/Third_Party/RosSerial/Inc/ros/service_server.h \
  ../Middlewares/Third_Party/RosSerial/Inc/ros/service_client.h \
  ../Middlewares/Third_Party/RosSerial/Inc/STM32Hardware.h \
- ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/String.h
+ ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/String.h \
+ ../Core/Inc/xl430_address.h
 
 ../Core/Inc/maincpp.h:
 
-../Core/Inc/xl480.h:
+../Core/Inc/xl430.h:
 
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 
@@ -156,3 +157,5 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
 ../Middlewares/Third_Party/RosSerial/Inc/STM32Hardware.h:
 
 ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/String.h:
+
+../Core/Inc/xl430_address.h:

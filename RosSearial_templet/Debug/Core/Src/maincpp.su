@@ -37,9 +37,10 @@ String.h:34:17:virtual int std_msgs::String::deserialize(unsigned char*)	32	stat
 String.h:49:18:virtual const char* std_msgs::String::getType()	16	static
 String.h:50:18:virtual const char* std_msgs::String::getMD5()	16	static
 maincpp.cpp:22:6:void HAL_UART_TxCpltCallback(UART_HandleTypeDef*)	16	static
-maincpp.cpp:26:6:void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)	16	static
-maincpp.cpp:30:6:void setup()	8	static
-maincpp.cpp:64:6:void StartDefaultTask(void*)	16	static
+maincpp.cpp:29:6:void HAL_UART_RxCpltCallback(UART_HandleTypeDef*)	16	static
+maincpp.cpp:33:6:void setup()	8	static
+maincpp.cpp:69:6:void StartDefaultTask(void*)	16	static
+maincpp.cpp:91:6:void setup_dummy()	8	static
 msg.h:129:15:static void ros::Msg::varToArr(A, V) [with A = unsigned char*; V = long unsigned int]	24	static
 msg.h:137:15:static void ros::Msg::arrToVar(V&, A) [with V = long unsigned int; A = unsigned char*]	24	static
 node_handle.h:50:7:constexpr ros::NodeHandleBase_::NodeHandleBase_()	16	static
@@ -57,5 +58,5 @@ node_handle.h:552:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISH
 node_handle.h:511:15:int ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::publish(int, const ros::Msg*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	40	static
 node_handle.h:402:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::setNow(ros::Time&) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	24	static
 node_handle.h:573:8:void ros::NodeHandle_<Hardware, MAX_SUBSCRIBERS, MAX_PUBLISHERS, INPUT_SIZE, OUTPUT_SIZE>::logerror(const char*) [with Hardware = STM32Hardware; int MAX_SUBSCRIBERS = 25; int MAX_PUBLISHERS = 25; int INPUT_SIZE = 512; int OUTPUT_SIZE = 512]	16	static
-maincpp.cpp:74:1:void __static_initialization_and_destruction_0(int, int)	16	static
-maincpp.cpp:74:1:cpp)	8	static
+maincpp.cpp:97:1:void __static_initialization_and_destruction_0(int, int)	16	static
+maincpp.cpp:97:1:cpp)	8	static
