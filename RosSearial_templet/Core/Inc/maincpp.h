@@ -18,7 +18,9 @@
 #include "main.h"
 #include "cmsis_os.h"
 
+
 void setup(void);
+
 void StartDefaultTask(void *argument);
 void setup_dummy(void);
 

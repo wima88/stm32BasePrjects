@@ -62,7 +62,7 @@ void __itCallback();// need to populate later
 /*--------api functions--------*/
 bool xl430_ping(uint8_t ID);
 void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const uint8_t *__inst);
-void xl_480_setSpeed(int left_speed,int right_speed);
+void xl430_Action();
 
 /*-----geters and setters-----*/
 void xl430_setRxData(struct rxData *data);

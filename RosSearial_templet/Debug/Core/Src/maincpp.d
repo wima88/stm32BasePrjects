@@ -50,6 +50,8 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
  ../Middlewares/Third_Party/RosSerial/Inc/ros/service_client.h \
  ../Middlewares/Third_Party/RosSerial/Inc/STM32Hardware.h \
  ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/String.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Twist.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Vector3.h \
  ../Core/Inc/xl430_address.h
 
 ../Core/Inc/maincpp.h:
@@ -157,5 +159,9 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
 ../Middlewares/Third_Party/RosSerial/Inc/STM32Hardware.h:
 
 ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/String.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Twist.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Vector3.h:
 
 ../Core/Inc/xl430_address.h:

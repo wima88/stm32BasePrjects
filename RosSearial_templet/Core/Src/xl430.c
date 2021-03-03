@@ -165,21 +165,11 @@ void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const 
 
 void xl430_Action()
 {
-
-
+  uint8_t _dataArr[]={0xFF,0xFF,0xFD,0x00,0xFE,0x03,0x00,0x05,0x00,0x00};
   uint16_t crc;
-
-  uint16_t m_len = 3;
-  uint8_t m_tx_buffer[10];
-  memcpy (m_tx_buffer,header,6);
-  memcpy (m_tx_buffer+sizeof(header),servo_ID+2,1);
-  memcpy (m_tx_buffer+sizeof(header)+1,&m_len,2);
-  memcpy (m_tx_buffer+sizeof(header)+3,&ACTION,1);
-  crc = update_crc(0,m_tx_buffer,8);
-
-  memcpy (m_tx_buffer+sizeof(header)+4,&crc,2);
-
-  xl430_writebuffer(m_tx_buffer,sizeof(m_tx_buffer));
+  crc = update_crc(0,_dataArr,8);
+  memcpy (_dataArr+8,&crc,2);
+  xl430_writebuffer(_dataArr,10);
 
 }
 
