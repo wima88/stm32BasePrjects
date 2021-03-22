@@ -56,6 +56,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern I2C_HandleTypeDef hi2c1;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 extern DMA_HandleTypeDef hdma_usart3_rx;
@@ -67,6 +68,8 @@ extern TIM_HandleTypeDef htim1;
 /* USER CODE BEGIN EV */
 extern uint8_t rx_buffer[64];
 struct rxData _data;
+extern uint8_t _expected_return_msgs;
+extern int count;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -148,6 +151,19 @@ void UsageFault_Handler(void)
 }
 
 /**
+  * @brief This function handles System service call via SWI instruction.
+  */
+void SVC_Handler(void)
+{
+  /* USER CODE BEGIN SVCall_IRQn 0 */
+
+  /* USER CODE END SVCall_IRQn 0 */
+  /* USER CODE BEGIN SVCall_IRQn 1 */
+
+  /* USER CODE END SVCall_IRQn 1 */
+}
+
+/**
   * @brief This function handles Debug monitor.
   */
 void DebugMon_Handler(void)
@@ -158,6 +174,33 @@ void DebugMon_Handler(void)
   /* USER CODE BEGIN DebugMonitor_IRQn 1 */
 
   /* USER CODE END DebugMonitor_IRQn 1 */
+}
+
+/**
+  * @brief This function handles Pendable request for system service.
+  */
+void PendSV_Handler(void)
+{
+  /* USER CODE BEGIN PendSV_IRQn 0 */
+
+  /* USER CODE END PendSV_IRQn 0 */
+  /* USER CODE BEGIN PendSV_IRQn 1 */
+
+  /* USER CODE END PendSV_IRQn 1 */
+}
+
+/**
+  * @brief This function handles System tick timer.
+  */
+void SysTick_Handler(void)
+{
+  /* USER CODE BEGIN SysTick_IRQn 0 */
+
+  /* USER CODE END SysTick_IRQn 0 */
+
+  /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  /* USER CODE END SysTick_IRQn 1 */
 }
 
 /******************************************************************************/
@@ -239,6 +282,20 @@ void TIM1_UP_IRQHandler(void)
 }
 
 /**
+  * @brief This function handles I2C1 event interrupt.
+  */
+void I2C1_EV_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
+
+  /* USER CODE END I2C1_EV_IRQn 0 */
+  HAL_I2C_EV_IRQHandler(&hi2c1);
+  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
+
+  /* USER CODE END I2C1_EV_IRQn 1 */
+}
+
+/**
   * @brief This function handles USART1 global interrupt.
   */
 void USART1_IRQHandler(void)
@@ -264,12 +321,17 @@ void USART3_IRQHandler(void)
   /* USER CODE BEGIN USART3_IRQn 1 */
 	if (__HAL_UART_GET_FLAG(&huart3, UART_FLAG_RXNE) == RESET) {
 		__HAL_UART_CLEAR_IDLEFLAG(&huart3);
+		count++;
+		if(count == _expected_return_msgs)
+		{
 		HAL_UART_DMAStop(&huart3) ;
+
 		_data.dataSize  = MAX_DATA_LENGTH - __HAL_DMA_GET_COUNTER(&hdma_usart3_rx);
 		memcpy(_data.data,rx_buffer,_data.dataSize);
 		xl430_setRxData(&_data);
-		__HAL_UART_CLEAR_IDLEFLAG(&huart3);
 		HAL_UART_Receive_DMA(&huart3, rx_buffer, 64);
+		count =0;
+		}
 	}
   /* USER CODE END USART3_IRQn 1 */
 }

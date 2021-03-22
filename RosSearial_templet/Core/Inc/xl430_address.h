@@ -19,7 +19,7 @@ const uint8_t REG_WR =0x04;
 const uint8_t ACTION =0x05;
 const uint8_t SYNC_RD=0x82;
 
-
+const uint16_t	DRIVE_MODE	 =	10	;
 const uint16_t	TORQUE_ENABLE	 =	64	;
 const uint16_t	LED	 =	65	;
 const uint16_t	STATUS_RETURN_LEVEL	 =	68	;

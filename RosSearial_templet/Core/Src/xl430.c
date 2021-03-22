@@ -8,6 +8,8 @@
 #include "xl430.h"
 #include "xl430_address.h"
 
+extern uint8_t rx_buffer[64];
+uint8_t _expected_return_msgs =1;
 
 void xl430_int(UART_HandleTypeDef *huart)
 {
@@ -24,6 +26,7 @@ void xl430_writebuffer(uint8_t * dataBuf,uint16_t data_length)
 
 }
 
+/*not work for broadcast*/
 struct prsRxData xl430_readbuffer()
 {
 	struct prsRxData _retData;
@@ -48,6 +51,46 @@ struct prsRxData xl430_readbuffer()
 	}
 
 	return _retData;
+
+}
+
+void xl430_readBroadcastBuffer(uint8_t numOf_IDs, struct prsRxData *_rxDataArr)
+{
+	struct prsRxData _retData;
+	uint16_t partialDataLen = _rxData.dataSize/numOf_IDs;
+	uint8_t __dataBucket[64];
+
+	 memcpy (__dataBucket,_rxData.data,_rxData.dataSize);
+
+	for(uint8_t i =0; i <numOf_IDs;i++ )
+	{
+	_retData.id 		= __dataBucket[4+(partialDataLen*i)];
+	_retData.errorFlag 	= __dataBucket[8+(partialDataLen*i)];
+
+	/* need to double check math and logic*/
+	_retData.crc_rx 	= __dataBucket[partialDataLen-2+(partialDataLen*i)] | (__dataBucket[partialDataLen-1+(partialDataLen*i)] <<8);
+	_retData.crc_cal 	= update_crc(0, __dataBucket+(partialDataLen*i), partialDataLen-2);
+	_retData.dat_len 	= __dataBucket[5+(partialDataLen*i)] | (__dataBucket[6+(partialDataLen*i)] <<8);
+	_retData.data = 0;
+	/*-------------------------*/
+
+	if(_retData.crc_cal == _retData.crc_rx)
+	{
+		_retData.crc_check = true;
+	}
+	else
+	{
+		_retData.crc_check = false;
+	}
+
+	for(uint16_t n =0; n<_retData.dat_len-4;n++)
+	{
+		_retData.data = _retData.data | (__dataBucket[9+n+((partialDataLen*i))] <<8*n);
+	}
+	_rxDataArr[i] = _retData ;
+	}//end of for loop
+
+
 
 }
 
@@ -108,6 +151,7 @@ bool xl430_ping(uint8_t ID)
 	__buffer[9] = (crc>>8) & 0x00FF;
 	__buffer[8] = (crc & 0x00FF);
 
+	_expected_return_msgs = 1;
 	xl430_writebuffer(__buffer,10);
 
 	struct prsRxData _data;
@@ -157,6 +201,15 @@ void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const 
 	  crc_[1]=(crc>>8) & 0x00FF;
 	  memcpy (m_tx_buffer+sizeof(header)+6+data_size,crc_,2);
 
+
+	  if(Id == 0xFE)
+	  {
+		  _expected_return_msgs = 2;
+	  }
+	  else
+	  {
+		  _expected_return_msgs = 1;
+	  }
 	    xl430_writebuffer(m_tx_buffer,sizeof(m_tx_buffer));
 
 
@@ -169,9 +222,35 @@ void xl430_Action()
   uint16_t crc;
   crc = update_crc(0,_dataArr,8);
   memcpy (_dataArr+8,&crc,2);
+  _expected_return_msgs=1;
   xl430_writebuffer(_dataArr,10);
 
 }
+
+
+
+void xl430_syncRead(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray)
+{
+  uint16_t mem_size=14+sizeofArray;
+  uint16_t crc;
+  uint16_t data_length = 4;
+
+  uint8_t m_tx_buffer [mem_size];
+  uint16_t m_len =7+sizeofArray;
+
+  memcpy (m_tx_buffer,header,6);
+  memcpy (m_tx_buffer+sizeof(header),servo_ID+2,1); //broadcast ID
+  memcpy (m_tx_buffer+sizeof(header)+1,&m_len,2);
+  memcpy (m_tx_buffer+sizeof(header)+3,&SYNC_RD,1);
+  memcpy (m_tx_buffer+sizeof(header)+4,address,2);
+  memcpy (m_tx_buffer+sizeof(header)+6,&data_length,2);
+  memcpy (m_tx_buffer+sizeof(header)+8,ID_array,sizeofArray);
+  crc = update_crc(0,m_tx_buffer,mem_size -2);
+  memcpy (m_tx_buffer+mem_size-2,&crc,2);
+ _expected_return_msgs = 2;
+ xl430_writebuffer(m_tx_buffer, mem_size);
+}
+
 
 
 

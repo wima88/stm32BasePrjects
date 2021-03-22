@@ -20,21 +20,12 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h \
+ ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
- ../Core/Inc/main.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
- ../Core/Inc/FreeRTOSConfig.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3/portmacro.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
- ../Middlewares/Third_Party/RosSerial/Inc/ros.h \
+ ../Core/Inc/main.h ../Middlewares/Third_Party/RosSerial/Inc/ros.h \
  ../Middlewares/Third_Party/RosSerial/Inc/ros/node_handle.h \
  ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/Time.h \
  ../Middlewares/Third_Party/RosSerial/Inc/ros/msg.h \
@@ -52,6 +43,15 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
  ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/String.h \
  ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Twist.h \
  ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Vector3.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/tf/transform_broadcaster.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/tf/tfMessage.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/TransformStamped.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/Header.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Transform.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Quaternion.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/tf/tf.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/sensor_msgs/Imu.h \
+ ../Core/Inc/bno055_stm32.h ../Core/Inc/bno055.h \
  ../Core/Inc/xl430_address.h
 
 ../Core/Inc/maincpp.h:
@@ -100,6 +100,8 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
 
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h:
 
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h:
+
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h:
 
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h:
@@ -109,24 +111,6 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:
 
 ../Core/Inc/main.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
-
-../Core/Inc/FreeRTOSConfig.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3/portmacro.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h:
 
 ../Middlewares/Third_Party/RosSerial/Inc/ros.h:
 
@@ -163,5 +147,25 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
 ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Twist.h:
 
 ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Vector3.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/tf/transform_broadcaster.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/tf/tfMessage.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/TransformStamped.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/std_msgs/Header.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Transform.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Quaternion.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/tf/tf.h:
+
+../Middlewares/Third_Party/RosSerial/Inc/sensor_msgs/Imu.h:
+
+../Core/Inc/bno055_stm32.h:
+
+../Core/Inc/bno055.h:
 
 ../Core/Inc/xl430_address.h:

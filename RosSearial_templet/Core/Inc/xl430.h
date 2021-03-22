@@ -52,6 +52,8 @@ struct txData {
 
 struct rxData _rxData;
 
+
+
 /*---------core functions-------*/
 void xl430_int(UART_HandleTypeDef *huart);
 void xl430_writebuffer(uint8_t * dataBuf, uint16_t data_length);
@@ -59,10 +61,14 @@ struct prsRxData xl430_readbuffer();
 uint16_t update_crc(uint16_t crc_accum, uint8_t *data_blk_ptr, uint16_t data_blk_size);
 void __itCallback();// need to populate later
 
+
 /*--------api functions--------*/
 bool xl430_ping(uint8_t ID);
 void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const uint8_t *__inst);
 void xl430_Action();
+
+void xl430_syncRead(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray);
+void xl430_readBroadcastBuffer(uint8_t numOf_IDs, struct prsRxData *_rxDataArr);
 
 /*-----geters and setters-----*/
 void xl430_setRxData(struct rxData *data);
