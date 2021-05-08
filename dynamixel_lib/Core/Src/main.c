@@ -134,6 +134,25 @@ int main(void)
 
   xl430_ping(0x1);
   xl430_ping(0x2);
+  HAL_Delay(1000);
+
+
+
+  xl430_getDrivermode(0x1);
+  xl430_getDrivermode(0x2);
+
+  xl430_EEPROM_Typrdef eeprom_xl430_01;
+  xl430_EEPROM_Typrdef eeprom_xl430_02;
+
+  eeprom_xl430_01.ID = 0x02;
+  eeprom_xl430_01._driveDirection = REVERSE_MODE;
+  eeprom_xl430_01._operatingMode = VELOCITY_CONTROL;
+  eeprom_xl430_01._profile = VELOCITY_PROFILE;
+
+  xl430_setDrivermode(eeprom_xl430_01);
+  eeprom_xl430_02=xl430_getDrivermode(0x2);
+
+
 
 
 

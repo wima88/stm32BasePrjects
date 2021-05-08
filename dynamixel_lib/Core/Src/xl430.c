@@ -259,12 +259,12 @@ bool xl430_ping(uint8_t ID)
 
 }
 
-void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const uint8_t *__inst)
+void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const uint8_t *__inst,uint8_t data_len )
 {
 	  uint16_t mem_size=12;
 	  uint16_t crc;
 	  char crc_[2];
-	  uint8_t data_size =4;
+	  uint8_t data_size =data_len;
 	  uint8_t data_array[4];
 
 
@@ -304,6 +304,52 @@ void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const 
 
 
 
+}
+
+xl430_EEPROM_Typrdef xl430_getDrivermode(uint8_t ID)
+{
+	xl430_EEPROM_Typrdef _retval;
+	struct prsRxData _data;
+	xl430_writeToAddress(ID,0x1,&DRIVE_MODE,&READ,4);
+
+
+	_data = xl430_readbuffer();
+
+	if(_data.crc_check && (!_data.errorFlag))
+	{
+		_retval.ID = ID;
+		_retval._profile = _data.data & 0x01;
+		_retval._driveDirection = _data.data &0x04;
+		_retval.errorFlag = _data.errorFlag;
+
+		sprintf(debug_buffer,"\n\r[ ID %d ] Drive Direction %d \n\r", ID,_retval._driveDirection);
+		xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
+		return _retval;
+	}
+	else
+	{
+		_retval.errorFlag = _data.errorFlag;
+		return _retval;
+	}
+}
+
+
+/*
+ * return error code
+ */
+uint8_t xl430_setDrivermode( xl430_EEPROM_Typrdef eeprom)
+{
+	struct prsRxData _data;
+	xl430_writeToAddress(eeprom.ID,(eeprom._profile<<2) | eeprom._driveDirection,&DRIVE_MODE,&WRITE,1);
+	_data = xl430_readbuffer();
+
+	if(_data.crc_check && (!_data.errorFlag))
+	{
+
+		return _data.errorFlag;
+	}
+	else
+		return _data.errorFlag;
 }
 
 void xl430_Action()
