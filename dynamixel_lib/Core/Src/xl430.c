@@ -14,7 +14,9 @@
 
  extern DMA_HandleTypeDef hdma_usart3_rx;
 
-
+/*
+ * @breif initilaize the xl430 with uart hardware descriptor
+ */
 void xl430_int(UART_HandleTypeDef *huart)
 {
 	_huart = *huart;
@@ -26,7 +28,9 @@ void xl430_int(UART_HandleTypeDef *huart)
 	xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
 
 }
-
+/*
+ * @breif basic write function that sends the byte stream to the device
+ */
 void xl430_writebuffer(uint8_t * dataBuf,uint16_t data_length)
 {
 	if(HAL_HalfDuplex_EnableTransmitter(&_huart) != HAL_OK)
@@ -44,8 +48,10 @@ void xl430_writebuffer(uint8_t * dataBuf,uint16_t data_length)
 	}
 
 }
-
-/*not work for broadcast*/
+/*
+ * @breif read the DMA and reset it and processed data according to protocol 2.0
+ * @brief not work for broadcast msgs
+ */
 struct prsRxData xl430_readbuffer()
 {
 
@@ -81,7 +87,12 @@ struct prsRxData xl430_readbuffer()
 	return _retData;
 
 }
-
+/*
+ * @breif read the DMA and reset it and processed data according to protocol 2.0
+ * @brief work for broadcast msgs
+ *
+ * @ToDo impliment the DMA copy and reset
+ */
 void xl430_readBroadcastBuffer(uint8_t numOf_IDs, struct prsRxData *_rxDataArr)
 {
 	struct prsRxData _retData;
@@ -121,7 +132,9 @@ void xl430_readBroadcastBuffer(uint8_t numOf_IDs, struct prsRxData *_rxDataArr)
 
 
 }
-
+/*
+ * @brief calculate the crc for all the read and write operation
+ */
 uint16_t update_crc(uint16_t crc_accum, uint8_t *data_blk_ptr, uint16_t data_blk_size)
 {
     uint16_t i, j;
@@ -169,7 +182,10 @@ uint16_t update_crc(uint16_t crc_accum, uint8_t *data_blk_ptr, uint16_t data_blk
     return crc_accum;
 }
 
-//function to trasnmit debug msg using uart
+/*
+ * @brief transmite the debug msgs to the same uart
+ * @ToDo define ifdef and impliment diferent uart to minimize the trafic
+ */
 void xl430_asci_tx(char * msg, uint8_t l)
 {
 	if(  HAL_HalfDuplex_EnableTransmitter(&_huart) == HAL_OK)
@@ -193,7 +209,10 @@ void xl430_asci_tx(char * msg, uint8_t l)
 
 }
 
-// simple blocking function to track hardware faults
+/*
+ * @brief hardware error handler -blocking
+ * 		  it need manual implimenttaion on use by case
+ */
 void xl430_error_handler()
 {
 	while(1)
@@ -202,7 +221,9 @@ void xl430_error_handler()
 	HAL_Delay(100);
 	}
 }
-
+/*
+ * @brief NOT USING AT THE MOMENT
+ */
 void __itCallback(DMA_HandleTypeDef hdma_usartx_rx)
 {
 	if (__HAL_UART_GET_FLAG(&_huart, UART_FLAG_RXNE) == RESET) {
@@ -220,45 +241,23 @@ void __itCallback(DMA_HandleTypeDef hdma_usartx_rx)
 		}
 	}
 }
-
-/*---------api functions----------*/
-bool xl430_ping(uint8_t ID)
-{
-	uint8_t __buffer[10] = {0xFF,0xFF,0xFD,0x00,0X00,0x03,0x00,0x01,0x00,0x00};
-	__buffer[4] = ID;
-	uint16_t crc =update_crc(0,__buffer,8);
-	__buffer[9] = (crc>>8) & 0x00FF;
-	__buffer[8] = (crc & 0x00FF);
-
-
-	xl430_writebuffer(__buffer,10);
-
-	struct prsRxData _data;
-	_data = xl430_readbuffer();
-
-	if(_data.crc_check && (!_data.errorFlag))
-	{
-
-		sprintf(debug_buffer,"\n\r[ ID %d ] Ping Successful\n\r", ID);
-		xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
-
-		sprintf(debug_buffer,"\n\r[ ID %d ] Firmware version %d \n\r", ID , _rxData.data[_rxData.dataSize-3]);
-	    xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
-
-
-		return true;
-	}
-	else
-	{
-		sprintf(debug_buffer,"\n\r[ ID %d ] Ping Fail Try again\n\r", ID);
-		xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
-		return false;
-
-	}
-
-
-}
-
+/*
+ * @brief write data to a spesific address
+ * @param data_len is the number of data size(byte) needed to spesific adress
+ * 		  refer to datasheet for more details
+ *
+ * 						|
+ * 		                V
+ * 		  ADRESS	size(Byte)			DataName		R/W
+ * 		  10 		   1 			Drive Mode 			RW
+		  11 		   1		 	Operating Mode 		RW
+		  12 		   1 			Secondary(Shadow) IDRW
+		  13 		   1 			Protocol Type 		RW
+		  20 		   4 			Homing Offset 		RW
+		  24 		   4 			Moving Threshold 	RW
+		  31 		   1 			Temperature Limit 	RW
+		  32 		   2 			Max Voltage Limit 	RW
+ */
 void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const uint8_t *__inst,uint8_t data_len )
 {
 	  uint16_t mem_size=12;
@@ -306,6 +305,52 @@ void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const 
 
 }
 
+/*---------api functions----------*/
+
+/*
+ * @brief Ping specific ID and return bool true upon a successful ping
+ */
+bool xl430_ping(uint8_t ID)
+{
+	uint8_t __buffer[10] = {0xFF,0xFF,0xFD,0x00,0X00,0x03,0x00,0x01,0x00,0x00};
+	__buffer[4] = ID;
+	uint16_t crc =update_crc(0,__buffer,8);
+	__buffer[9] = (crc>>8) & 0x00FF;
+	__buffer[8] = (crc & 0x00FF);
+
+
+	xl430_writebuffer(__buffer,10);
+
+	struct prsRxData _data;
+	_data = xl430_readbuffer();
+
+	if(_data.crc_check && (!_data.errorFlag))
+	{
+
+		sprintf(debug_buffer,"\n\r[ ID %d ] Ping Successful\n\r", ID);
+		xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
+
+		sprintf(debug_buffer,"\n\r[ ID %d ] Firmware version %d \n\r", ID , _rxData.data[_rxData.dataSize-3]);
+	    xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
+
+
+		return true;
+	}
+	else
+	{
+		sprintf(debug_buffer,"\n\r[ ID %d ] Ping Fail Try again\n\r", ID);
+		xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
+		return false;
+
+	}
+
+
+}
+
+
+/*
+ * @brief read the driver configuration from eeprom of the device
+ */
 xl430_EEPROM_Typrdef xl430_getDrivermode(uint8_t ID)
 {
 	xl430_EEPROM_Typrdef _retval;
@@ -335,7 +380,19 @@ xl430_EEPROM_Typrdef xl430_getDrivermode(uint8_t ID)
 
 
 /*
- * return error code
+ * @brief set the driver configuration if fails return the error code
+ *
+ * ErrorCode			Description
+ * 0x01 				Result Fail 		Failed to process the sent Instruction Packet
+ * 0x02 				Instruction Error 	Undefined Instruction has been used
+ * 0x03 				CRC Error 			CRC of the sent Packet does not match
+ * 0x04 				Data Range Error 	Data to be written in the corresponding Address is outside the range of the minimum/maximum value
+ * 0x05 				Data Length Error 	Attempt to write Data that is shorter than the data length of the corresponding Address
+											(ex: when you attempt to only use 2 bytes of a item that has been defined as 4 bytes)
+ * 0x06 				Data Limit Error 	Data to be written in the corresponding Address is outside of the Limit value
+ * 0x07 				Access Error 		Attempt to write a value in an Address that is Read Only or has not been defined
+											Attempt to read a value in an Address that is Write Only or has not been defined
+											Attempt to write a value in the ROM domain while in a state of Torque Enable(ROM Lock)
  */
 uint8_t xl430_setDrivermode( xl430_EEPROM_Typrdef eeprom)
 {
@@ -351,7 +408,9 @@ uint8_t xl430_setDrivermode( xl430_EEPROM_Typrdef eeprom)
 	else
 		return _data.errorFlag;
 }
-
+/*
+ * @brief send the action instruction
+ */
 void xl430_Action()
 {
   uint8_t _dataArr[]={0xFF,0xFF,0xFD,0x00,0xFE,0x03,0x00,0x05,0x00,0x00};
@@ -364,7 +423,9 @@ void xl430_Action()
 }
 
 
-
+/*
+ * @brief For multiple devices, Instruction to read data from the same Address with the same length at once
+ */
 void xl430_syncRead(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray)
 {
   uint16_t mem_size=14+sizeofArray;
@@ -387,7 +448,7 @@ void xl430_syncRead(const uint16_t *address,const uint8_t *ID_array, uint8_t siz
  xl430_writebuffer(m_tx_buffer, mem_size);
 }
 
-
+void xl430_syncWrite(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray,int data,uint8_t data_len);
 
 
 void xl430_setRxData(struct rxData *data)

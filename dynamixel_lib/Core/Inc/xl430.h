@@ -93,22 +93,22 @@ uint16_t update_crc(uint16_t crc_accum, uint8_t *data_blk_ptr, uint16_t data_blk
 void xl430_asci_tx(char * msg, uint8_t l);
 void xl430_error_handler();
 void __itCallback(DMA_HandleTypeDef hdma_usartx_rx);// need to populate later
+void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const uint8_t *__inst,uint8_t data_len );
+void xl430_setRxData(struct rxData *data);
 
 
 /*--------api functions--------*/
 bool xl430_ping(uint8_t ID);
-
 xl430_EEPROM_Typrdef xl430_getDrivermode(uint8_t ID);
 uint8_t xl430_setDrivermode( xl430_EEPROM_Typrdef eeprom);
-
-void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const uint8_t *__inst,uint8_t data_len );
 void xl430_Action();
 
+
 void xl430_syncRead(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray);
+void xl430_syncWrite(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray,int data,uint8_t data_len);
 void xl430_readBroadcastBuffer(uint8_t numOf_IDs, struct prsRxData *_rxDataArr);
 
-/*-----geters and setters-----*/
-void xl430_setRxData(struct rxData *data);
+
 
 
 
