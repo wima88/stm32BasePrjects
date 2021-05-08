@@ -18,6 +18,7 @@ const uint8_t WRITE  =0x03;
 const uint8_t REG_WR =0x04;
 const uint8_t ACTION =0x05;
 const uint8_t SYNC_RD=0x82;
+const uint8_t SYNC_WT=0x83;
 
 const uint16_t	DRIVE_MODE	 =	10	;
 const uint16_t	TORQUE_ENABLE	 =	64	;

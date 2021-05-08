@@ -95,7 +95,7 @@ int main(void)
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 
-
+/*
   sprintf(debug_buffer,"******UART TEST******\n\r");
 
   if(  HAL_HalfDuplex_EnableTransmitter(&huart3) == HAL_OK)
@@ -128,10 +128,10 @@ int main(void)
   	  }
   if(HAL_HalfDuplex_EnableReceiver(&huart3) != HAL_OK)
    { HAL_GPIO_TogglePin(LED_2_GPIO_Port, LED_2_Pin);}
-
+*/
   xl430_int(&huart3);
 
-
+/*
   xl430_ping(0x1);
   xl430_ping(0x2);
   HAL_Delay(1000);
@@ -151,9 +151,11 @@ int main(void)
 
   xl430_setDrivermode(eeprom_xl430_01);
   eeprom_xl430_02=xl430_getDrivermode(0x2);
+*/
+uint8_t m_ID_array[] = {0x01,0x02};
+int data[] ={150,170};
 
-
-
+  xl430_syncWrite((uint16_t )116,m_ID_array,2,data,4);
 
 
   /* USER CODE END 2 */

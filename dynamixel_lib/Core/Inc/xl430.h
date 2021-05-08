@@ -105,7 +105,7 @@ void xl430_Action();
 
 
 void xl430_syncRead(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray);
-void xl430_syncWrite(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray,int data,uint8_t data_len);
+void xl430_syncWrite(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofIDArray,int *data,uint8_t data_len);
 void xl430_readBroadcastBuffer(uint8_t numOf_IDs, struct prsRxData *_rxDataArr);
 
 

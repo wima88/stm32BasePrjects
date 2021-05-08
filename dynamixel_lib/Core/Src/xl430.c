@@ -448,7 +448,46 @@ void xl430_syncRead(const uint16_t *address,const uint8_t *ID_array, uint8_t siz
  xl430_writebuffer(m_tx_buffer, mem_size);
 }
 
-void xl430_syncWrite(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray,int data,uint8_t data_len);
+/*
+ * @brief For multiple devices, Instruction to write data on the same Address with the same length at once
+ * @param
+ * 	address address which need writing
+ * 	ID_array array of ID
+ * 	sizeOFIDArray numberof elements in id array mention above
+ * 	data array of data for each id followed by same order as array of ID
+ * 	data_len length of the data field corresponding to the address
+ *
+ */
+void xl430_syncWrite(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofIDArray,int *data,uint8_t data_len)
+{
+	uint16_t mem_size=14+sizeofIDArray+(data_len*sizeofIDArray);
+	uint16_t crc;
+
+	//allocate a memory
+	uint8_t m_tx_buffer[mem_size];
+	uint16_t m_len =7+sizeofIDArray+data_len*sizeofIDArray;
+
+	memcpy (m_tx_buffer,header,6);
+	memcpy (m_tx_buffer+sizeof(header),servo_ID+2,1); //broadcast ID
+	memcpy (m_tx_buffer+sizeof(header)+1,&m_len,2);
+	memcpy (m_tx_buffer+sizeof(header)+3,&SYNC_WT,1);
+	memcpy (m_tx_buffer+sizeof(header)+4,address,2);
+	memcpy (m_tx_buffer+sizeof(header)+6,&data_len,2);
+
+	uint8_t tempCount = 8;
+	for(uint8_t i=0 ;i <sizeofIDArray; i++)
+	{
+		memcpy (m_tx_buffer+sizeof(header)+tempCount,ID_array+i,1);
+		memcpy (m_tx_buffer+sizeof(header)+tempCount+1,data+i,data_len);
+		tempCount = tempCount+1+data_len;
+	}
+	crc = update_crc(0,m_tx_buffer,mem_size -2);
+	memcpy (m_tx_buffer+mem_size-2,&crc,2);
+	xl430_writebuffer(m_tx_buffer, mem_size);
+
+	HAL_Delay(sizeofIDArray*3);
+
+}
 
 
 void xl430_setRxData(struct rxData *data)
