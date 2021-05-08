@@ -43,14 +43,9 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
  ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/String.h \
  ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Twist.h \
  ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Vector3.h \
- ../Middlewares/Third_Party/RosSerial/Inc/tf/transform_broadcaster.h \
- ../Middlewares/Third_Party/RosSerial/Inc/tf/tfMessage.h \
- ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/TransformStamped.h \
- ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/Header.h \
- ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Transform.h \
- ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Quaternion.h \
- ../Middlewares/Third_Party/RosSerial/Inc/tf/tf.h \
  ../Middlewares/Third_Party/RosSerial/Inc/sensor_msgs/Imu.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/Header.h \
+ ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Quaternion.h \
  ../Core/Inc/bno055_stm32.h ../Core/Inc/bno055.h \
  ../Core/Inc/xl430_address.h
 
@@ -148,21 +143,11 @@ Core/Src/maincpp.o: ../Core/Src/maincpp.cpp ../Core/Inc/maincpp.h \
 
 ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Vector3.h:
 
-../Middlewares/Third_Party/RosSerial/Inc/tf/transform_broadcaster.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/tf/tfMessage.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/TransformStamped.h:
+../Middlewares/Third_Party/RosSerial/Inc/sensor_msgs/Imu.h:
 
 ../Middlewares/Third_Party/RosSerial/Inc/std_msgs/Header.h:
 
-../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Transform.h:
-
 ../Middlewares/Third_Party/RosSerial/Inc/geometry_msgs/Quaternion.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/tf/tf.h:
-
-../Middlewares/Third_Party/RosSerial/Inc/sensor_msgs/Imu.h:
 
 ../Core/Inc/bno055_stm32.h:
 
