@@ -108,7 +108,9 @@ uint8_t xl430_setDrivermode( xl430_EEPROM_Typrdef eeprom);
 void xl430_Action();
 struct prsRxData xl430_torqeEnable(uint8_t ID,bool Torque_stat);
 void xl430_LED(uint8_t ID, bool LED_stat);
-void xl430_SetSpeed(uint8_t ID , int speed);
+void xl430_setSpeed(uint8_t ID , int speed);
+struct prsRxData xl430_getSpeed(uint8_t ID);
+
 
 
 void xl430_syncRead(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray);

@@ -52,14 +52,14 @@ void xl430_writebuffer(uint8_t * dataBuf,uint16_t data_length)
 	else
 	{
 		HAL_UART_Transmit(&_huart, dataBuf, data_length, 100);
-		HAL_Delay(5);
+
 	}
 
 	if(HAL_HalfDuplex_EnableReceiver(&_huart) !=HAL_OK)
 	{
 		xl430_error_handler();
 	}
-
+	HAL_Delay(4);
 }
 /*
  * @breif read the DMA and reset it and processed data according to protocol 2.0
@@ -68,13 +68,13 @@ void xl430_writebuffer(uint8_t * dataBuf,uint16_t data_length)
 struct prsRxData xl430_readbuffer()
 {
 
-	HAL_Delay(10);
+	//HAL_Delay(5);
 	HAL_UART_DMAStop(&_huart) ;
 	_rxData.dataSize  = MAX_DATA_LENGTH - __HAL_DMA_GET_COUNTER(&hdma_usart3_rx);
 	memcpy(_rxData.data,rx_buffer,_rxData.dataSize);
 	xl430_setRxData(&_rxData);
 	HAL_UART_Receive_DMA(&_huart, rx_buffer, 64);
-	HAL_Delay(20);
+	//HAL_Delay(20);
 
 	struct prsRxData _retData;
 	_retData.id 		= _rxData.data[4];
@@ -266,8 +266,6 @@ void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const 
 	  uint8_t data_size =data_len;
 	  uint8_t data_array[4];
 
-
-
 	  data_array[0] = tx_data & 0x000000FF;
 	  data_array[1] = (tx_data>>8) & 0x000000FF;
 	  data_array[2] = (tx_data>>16) & 0x000000FF;
@@ -290,15 +288,6 @@ void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const 
 	  crc_[1]=(crc>>8) & 0x00FF;
 	  memcpy (m_tx_buffer+sizeof(header)+6+data_size,crc_,2);
 
-
-	  if(Id == 0xFE)
-	  {
-		  _expected_return_msgs = 2;
-	  }
-	  else
-	  {
-		  _expected_return_msgs = 1;
-	  }
 	    xl430_writebuffer(m_tx_buffer,sizeof(m_tx_buffer));
 
 
@@ -424,7 +413,7 @@ void xl430_Action()
 /*
  * @brief Enable torque on device with ID
  * 		  This will lock the eeprom area and cannot be perform writes
- * @ToDo testing
+ *
  */
 
 struct prsRxData xl430_torqeEnable(uint8_t ID,bool torque_stat)
@@ -445,10 +434,33 @@ void xl430_LED(uint8_t ID,bool LED_stat)
  * @breif set the target velocity
  * 		  turn on torque before calling
  */
-void xl430_SetSpeed(uint8_t ID , int speed)
+void xl430_setSpeed(uint8_t ID , int speed)
 {
 	xl430_writeToAddress(ID, speed, &GOAL_VELOCITY,&WRITE, 4);
 }
+
+struct prsRxData xl430_getSpeed(uint8_t ID)
+{
+	struct prsRxData _data;
+	xl430_writeToAddress(ID, 4, &PRESENT_VELOCITY,&READ, 4);
+	_data = xl430_readbuffer();
+
+	if(_data.crc_check && (!_data.errorFlag))
+		{
+
+		sprintf(debug_buffer,"[ ID %d ] Present Velocity %d \n\r", ID,_data.data);
+		xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
+		}
+		else
+		{
+			sprintf(debug_buffer,"[ ID %d ] Error when reading buffer \n\r", ID);
+			xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
+		}
+
+	return _data;
+
+
+	}
 
 /*
  * @brief For multiple devices, Instruction to read data from the same Address with the same length at once

@@ -118,7 +118,11 @@ int main(void)
 
   xl430_LED(1, 0);
   xl430_torqeEnable(1, 1);
-  xl430_SetSpeed(1, 100);
+ // HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, SET);
+  xl430_setSpeed(1, 100);
+ // HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, RESET);
+
+
 
 
 uint8_t m_ID_array[] = {0x01,0x02};
@@ -133,6 +137,8 @@ int data[] ={150,170};
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  xl430_getSpeed(1);
+	  HAL_Delay(2000);
 
 
 
