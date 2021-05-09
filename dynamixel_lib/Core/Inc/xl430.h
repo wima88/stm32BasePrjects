@@ -106,8 +106,9 @@ bool xl430_ping(uint8_t ID);
 xl430_EEPROM_Typrdef xl430_getDrivermode(uint8_t ID);
 uint8_t xl430_setDrivermode( xl430_EEPROM_Typrdef eeprom);
 void xl430_Action();
-void xl430_torqeEnable(uint8_t ID,bool Torque_stat);
+struct prsRxData xl430_torqeEnable(uint8_t ID,bool Torque_stat);
 void xl430_LED(uint8_t ID, bool LED_stat);
+void xl430_SetSpeed(uint8_t ID , int speed);
 
 
 void xl430_syncRead(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray);

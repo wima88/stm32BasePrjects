@@ -116,13 +116,15 @@ int main(void)
   xl430_getDrivermode(0x1);
   xl430_getDrivermode(0x2);
 
-  xl430_LED(1, 1);
+  xl430_LED(1, 0);
+  xl430_torqeEnable(1, 1);
+  xl430_SetSpeed(1, 100);
 
 
 uint8_t m_ID_array[] = {0x01,0x02};
 int data[] ={150,170};
 
-  xl430_syncWrite((uint16_t )116,m_ID_array,2,data,4);
+ // xl430_syncWrite((uint16_t )116,m_ID_array,2,data,4);
 
 
   /* USER CODE END 2 */
