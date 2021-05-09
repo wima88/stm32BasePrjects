@@ -420,6 +420,22 @@ void xl430_Action()
   xl430_writebuffer(_dataArr,10);
 
 }
+/*
+ * @brief Enable torque on device with ID
+ * 		  This will lock the eeprom area and cannot be perform writes
+ * @ToDo testing
+ */
+void xl430_torqeEnable(uint8_t ID,bool torque_stat)
+{
+	xl430_writeToAddress(ID, torque_stat, &TORQUE_ENABLE,&WRITE, 1);
+}
+/*
+ * @brief turn on off LED
+ */
+void xl430_LED(uint8_t ID,bool LED_stat)
+{
+	xl430_writeToAddress(ID, LED_stat, &LED,&WRITE, 1);
+}
 
 
 /*

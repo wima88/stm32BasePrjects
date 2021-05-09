@@ -93,7 +93,7 @@ HAL_StatusTypeDef xl430_debug_uart_init(UART_HandleTypeDef *huart);
 void xl430_writebuffer(uint8_t * dataBuf, uint16_t data_length);
 struct prsRxData xl430_readbuffer();
 uint16_t update_crc(uint16_t crc_accum, uint8_t *data_blk_ptr, uint16_t data_blk_size);
-void xl430_asci_tx(char * msg, uint8_t l);
+void xl430_asci_tx(char * msg, uint8_t l); // debug interface
 void xl430_error_handler();
 void __itCallback(DMA_HandleTypeDef hdma_usartx_rx);// need to populate later
 void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const uint8_t *__inst,uint8_t data_len );
@@ -106,6 +106,8 @@ bool xl430_ping(uint8_t ID);
 xl430_EEPROM_Typrdef xl430_getDrivermode(uint8_t ID);
 uint8_t xl430_setDrivermode( xl430_EEPROM_Typrdef eeprom);
 void xl430_Action();
+void xl430_torqeEnable(uint8_t ID,bool Torque_stat);
+void xl430_LED(uint8_t ID, bool LED_stat);
 
 
 void xl430_syncRead(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray);
