@@ -24,8 +24,10 @@ extern "C" {
 #define MAX_DATA_LENGTH 64
 #define DEVICES_CONNECT 2
 
+#define DEBUG_UART 1
 
 
+UART_HandleTypeDef _debug_huart;
 
 UART_HandleTypeDef _huart;
 uint8_t rx_buffer[MAX_DATA_LENGTH];
@@ -87,6 +89,7 @@ struct rxData _rxData;
 
 /*---------core functions-------*/
 void xl430_int(UART_HandleTypeDef *huart);
+HAL_StatusTypeDef xl430_debug_uart_init(UART_HandleTypeDef *huart);
 void xl430_writebuffer(uint8_t * dataBuf, uint16_t data_length);
 struct prsRxData xl430_readbuffer();
 uint16_t update_crc(uint16_t crc_accum, uint8_t *data_blk_ptr, uint16_t data_blk_size);
@@ -95,6 +98,7 @@ void xl430_error_handler();
 void __itCallback(DMA_HandleTypeDef hdma_usartx_rx);// need to populate later
 void xl430_writeToAddress(uint8_t Id ,int tx_data,const uint16_t *address,const uint8_t *__inst,uint8_t data_len );
 void xl430_setRxData(struct rxData *data);
+
 
 
 /*--------api functions--------*/

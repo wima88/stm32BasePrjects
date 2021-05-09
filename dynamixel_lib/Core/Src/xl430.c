@@ -10,7 +10,7 @@
 
 
  uint8_t rx_buffer[64];
- char debug_buffer[64];
+ char debug_buffer[46];
 
  extern DMA_HandleTypeDef hdma_usart3_rx;
 
@@ -24,10 +24,22 @@ void xl430_int(UART_HandleTypeDef *huart)
 	_expected_return_msgs= DEVICES_CONNECT-1;
 	rply_msg_count = 0;
 	// use same uart to send debug msgs
-	sprintf(debug_buffer, "\nxl430lib Initialized\n\r");
+	sprintf(debug_buffer, "xl430lib Initialized\n\r");
 	xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
 
 }
+
+HAL_StatusTypeDef xl430_debug_uart_init(UART_HandleTypeDef *huart)
+{
+	char _debug_buffer[64];
+	_debug_huart = *huart;
+	memset(_debug_buffer,'\0',sizeof(_debug_buffer));
+	sprintf(_debug_buffer,"Serial Debug interface Initialized\n\r");
+	HAL_StatusTypeDef x= HAL_UART_Transmit_DMA(huart, (uint8_t *)_debug_buffer, sizeof(debug_buffer));
+	HAL_Delay(3);
+	return x;
+
+	}
 /*
  * @breif basic write function that sends the byte stream to the device
  */
@@ -184,29 +196,16 @@ uint16_t update_crc(uint16_t crc_accum, uint8_t *data_blk_ptr, uint16_t data_blk
 
 /*
  * @brief transmite the debug msgs to the same uart
- * @ToDo define ifdef and impliment diferent uart to minimize the trafic
  */
 void xl430_asci_tx(char * msg, uint8_t l)
 {
-	if(  HAL_HalfDuplex_EnableTransmitter(&_huart) == HAL_OK)
-	{
-		if(HAL_UART_Transmit(&_huart, (uint8_t *)msg,l,1000) != HAL_OK)
+#ifdef DEBUG_UART
+		if(HAL_UART_Transmit(&_debug_huart, (uint8_t *)msg,l, 500)!= HAL_OK)
 		{
 			xl430_error_handler();
 		}
 		HAL_Delay(10);
-	}
-	else
-	{
-		xl430_error_handler();
-	}
-	if(HAL_HalfDuplex_EnableReceiver(&_huart) !=HAL_OK)
-	{
-		xl430_error_handler();
-
-	}
-
-
+#endif
 }
 
 /*
@@ -327,10 +326,10 @@ bool xl430_ping(uint8_t ID)
 	if(_data.crc_check && (!_data.errorFlag))
 	{
 
-		sprintf(debug_buffer,"\n\r[ ID %d ] Ping Successful\n\r", ID);
+		sprintf(debug_buffer,"[ ID %d ] Ping Successful\n\r", ID);
 		xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
 
-		sprintf(debug_buffer,"\n\r[ ID %d ] Firmware version %d \n\r", ID , _rxData.data[_rxData.dataSize-3]);
+		sprintf(debug_buffer,"[ ID %d ] Firmware version %d \n\r", ID , _rxData.data[_rxData.dataSize-3]);
 	    xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
 
 
@@ -338,7 +337,7 @@ bool xl430_ping(uint8_t ID)
 	}
 	else
 	{
-		sprintf(debug_buffer,"\n\r[ ID %d ] Ping Fail Try again\n\r", ID);
+		sprintf(debug_buffer,"[ ID %d ] Ping Fail Try again\n\r", ID);
 		xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
 		return false;
 
@@ -363,11 +362,11 @@ xl430_EEPROM_Typrdef xl430_getDrivermode(uint8_t ID)
 	if(_data.crc_check && (!_data.errorFlag))
 	{
 		_retval.ID = ID;
-		_retval._profile = _data.data & 0x01;
-		_retval._driveDirection = _data.data &0x04;
+		_retval._profile = _data.data & 0x04;
+		_retval._driveDirection = _data.data &0x01;
 		_retval.errorFlag = _data.errorFlag;
 
-		sprintf(debug_buffer,"\n\r[ ID %d ] Drive Direction %d \n\r", ID,_retval._driveDirection);
+		sprintf(debug_buffer,"[ ID %d ] Drive Direction %d \n\r", ID,_retval._driveDirection);
 		xl430_asci_tx(debug_buffer,sizeof(debug_buffer));
 		return _retval;
 	}

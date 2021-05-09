@@ -42,7 +42,9 @@
 
 /* Private variables ---------------------------------------------------------*/
 
+UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart3;
+DMA_HandleTypeDef hdma_usart1_tx;
 DMA_HandleTypeDef hdma_usart3_rx;
 
 /* USER CODE BEGIN PV */
@@ -54,6 +56,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_USART3_UART_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -93,48 +96,20 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART3_UART_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
-/*
-  sprintf(debug_buffer,"******UART TEST******\n\r");
+  if(xl430_debug_uart_init(&huart1) != HAL_OK)
+    		  {
+    			  HAL_GPIO_TogglePin(LED_1_GPIO_Port, LED_1_Pin);
+    		  }
 
-  if(  HAL_HalfDuplex_EnableTransmitter(&huart3) == HAL_OK)
-  	  {
-  		  if(HAL_UART_Transmit(&huart3, (uint8_t *)debug_buffer,sizeof(debug_buffer),1000) != HAL_OK)
-  		  {
-  			  HAL_GPIO_TogglePin(LED_1_GPIO_Port, LED_1_Pin);
-  		  }
-  	  }
-  	  else
-  	  {
-  		  HAL_GPIO_TogglePin(LED_2_GPIO_Port, LED_2_Pin);
-  	  }
-  if(HAL_HalfDuplex_EnableReceiver(&huart3) != HAL_OK)
-  { HAL_GPIO_TogglePin(LED_2_GPIO_Port, LED_2_Pin);}
-  HAL_Delay(10);
 
-  sprintf(debug_buffer,"******Initializing xl430 lib******\n\r");
-
-  if(  HAL_HalfDuplex_EnableTransmitter(&huart3) == HAL_OK)
-  	  {
-  		  if(HAL_UART_Transmit(&huart3, (uint8_t *)debug_buffer,sizeof(debug_buffer),1000) != HAL_OK)
-  		  {
-  			  HAL_GPIO_TogglePin(LED_1_GPIO_Port, LED_1_Pin);
-  		  }
-  	  }
-  	  else
-  	  {
-  		  HAL_GPIO_TogglePin(LED_2_GPIO_Port, LED_2_Pin);
-  	  }
-  if(HAL_HalfDuplex_EnableReceiver(&huart3) != HAL_OK)
-   { HAL_GPIO_TogglePin(LED_2_GPIO_Port, LED_2_Pin);}
-*/
   xl430_int(&huart3);
 
-/*
+
   xl430_ping(0x1);
   xl430_ping(0x2);
-  HAL_Delay(1000);
 
 
 
@@ -142,7 +117,6 @@ int main(void)
   xl430_getDrivermode(0x2);
 
   xl430_EEPROM_Typrdef eeprom_xl430_01;
-  xl430_EEPROM_Typrdef eeprom_xl430_02;
 
   eeprom_xl430_01.ID = 0x02;
   eeprom_xl430_01._driveDirection = REVERSE_MODE;
@@ -150,8 +124,8 @@ int main(void)
   eeprom_xl430_01._profile = VELOCITY_PROFILE;
 
   xl430_setDrivermode(eeprom_xl430_01);
-  eeprom_xl430_02=xl430_getDrivermode(0x2);
-*/
+  xl430_getDrivermode(0x2);
+
 uint8_t m_ID_array[] = {0x01,0x02};
 int data[] ={150,170};
 
@@ -226,12 +200,48 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART3;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_USART3;
+  PeriphClkInitStruct.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
   PeriphClkInitStruct.Usart3ClockSelection = RCC_USART3CLKSOURCE_PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
 }
 
 /**
@@ -277,11 +287,15 @@ static void MX_DMA_Init(void)
 
   /* DMA controller clock enable */
   __HAL_RCC_DMA1_CLK_ENABLE();
+  __HAL_RCC_DMA2_CLK_ENABLE();
 
   /* DMA interrupt init */
   /* DMA1_Stream1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Stream1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream1_IRQn);
+  /* DMA2_Stream7_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream7_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream7_IRQn);
 
 }
 
