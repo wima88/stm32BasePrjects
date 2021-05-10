@@ -108,9 +108,26 @@ struct prsRxData xl430_readbuffer()
  */
 void xl430_readBroadcastBuffer(uint8_t numOf_IDs, struct prsRxData *_rxDataArr)
 {
+
+
+	//copy stuff from DMA and reset it
+	HAL_UART_DMAStop(&_huart) ;
+	_rxData.dataSize  = MAX_DATA_LENGTH - __HAL_DMA_GET_COUNTER(&hdma_usart3_rx);
+	memcpy(_rxData.data,rx_buffer,_rxData.dataSize);
+	xl430_setRxData(&_rxData);
+	HAL_UART_Receive_DMA(&_huart, rx_buffer, 64);
+	/*--------------------------------*/
+
 	struct prsRxData _retData;
 	uint16_t partialDataLen = _rxData.dataSize/numOf_IDs;
 	uint8_t __dataBucket[64];
+
+	if(_rxData.dataSize == 0)
+	{
+		sprintf(debug_buffer, "[Error] no data in the buffer to process!");
+		xl430_asci_tx(debug_buffer, sizeof(debug_buffer));
+
+	}
 
 	 memcpy (__dataBucket,_rxData.data,_rxData.dataSize);
 
@@ -142,9 +159,17 @@ void xl430_readBroadcastBuffer(uint8_t numOf_IDs, struct prsRxData *_rxDataArr)
 	_rxDataArr[i] = _retData ;
 	}//end of for loop
 
+#ifdef DEBUG_UART
+	for(uint8_t i =0; i <numOf_IDs;i++ )
+	{
+		sprintf(debug_buffer, "[ ID %d ]Data %d \n\r  \tError Flag %x \n\n\r",_rxDataArr[i].id ,_rxDataArr[i].data, _rxDataArr[i].errorFlag);
+				xl430_asci_tx(debug_buffer, sizeof(debug_buffer));
+	}
 
+#endif
 
 }
+
 /*
  * @brief calculate the crc for all the read and write operation
  */
@@ -464,6 +489,7 @@ struct prsRxData xl430_getSpeed(uint8_t ID)
 
 /*
  * @brief For multiple devices, Instruction to read data from the same Address with the same length at once
+ * @ToDo calculate proper time need data to trasnmit and add Delay at the end
  */
 void xl430_syncRead(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofArray)
 {
@@ -528,9 +554,50 @@ void xl430_syncWrite(const uint16_t *address,const uint8_t *ID_array, uint8_t si
 
 }
 
-
 void xl430_setRxData(struct rxData *data)
 {
 	_rxData = *data;
 	memset(rx_buffer,0,data->dataSize);
 }
+
+
+/* -- user specific functions -- */
+
+void xl430_readMotorSpeeds(){
+
+}
+
+
+void xl430_libTest()
+{
+
+	uint8_t _IDs[] = {0x01,0x02};
+	int motor_speed[]= {100,100};
+	struct prsRxData speedData[2];
+
+	  xl430_ping(0x1);
+	  xl430_ping(0x2);
+
+	  xl430_getDrivermode(0x1);
+	  xl430_getDrivermode(0x2);
+
+	  xl430_LED(1, 0);
+	  xl430_torqeEnable(1, 1);
+	  xl430_torqeEnable(2, 1);
+	  xl430_syncWrite(&GOAL_VELOCITY, _IDs, 2, motor_speed, 4);
+	  HAL_Delay(50);
+	  while(1)
+	  {
+		  xl430_syncRead(&PRESENT_VELOCITY, _IDs,2);
+		  HAL_Delay(50);
+		  xl430_readBroadcastBuffer(2, speedData);
+		  HAL_Delay(50);
+
+	  }
+
+
+
+
+}
+
+

@@ -24,7 +24,7 @@ extern "C" {
 #define MAX_DATA_LENGTH 64
 #define DEVICES_CONNECT 2
 
-#define DEBUG_UART 1
+#define DEBUG_UART 1 // comment me out at production
 
 
 UART_HandleTypeDef _debug_huart;
@@ -117,7 +117,9 @@ void xl430_syncRead(const uint16_t *address,const uint8_t *ID_array, uint8_t siz
 void xl430_syncWrite(const uint16_t *address,const uint8_t *ID_array, uint8_t sizeofIDArray,int *data,uint8_t data_len);
 void xl430_readBroadcastBuffer(uint8_t numOf_IDs, struct prsRxData *_rxDataArr);
 
-
+/* --user specific functions-- */
+void xl430_libTest(); // temp function for testing
+void xl430_readMotorSpeeds();
 
 
 

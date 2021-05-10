@@ -104,31 +104,9 @@ int main(void)
     			  HAL_GPIO_TogglePin(LED_1_GPIO_Port, LED_1_Pin);
     		  }
 
-
   xl430_int(&huart3);
+  xl430_libTest();
 
-
-  xl430_ping(0x1);
-  xl430_ping(0x2);
-
-
-
-  xl430_getDrivermode(0x1);
-  xl430_getDrivermode(0x2);
-
-  xl430_LED(1, 0);
-  xl430_torqeEnable(1, 1);
- // HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, SET);
-  xl430_setSpeed(1, 100);
- // HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, RESET);
-
-
-
-
-uint8_t m_ID_array[] = {0x01,0x02};
-int data[] ={150,170};
-
- // xl430_syncWrite((uint16_t )116,m_ID_array,2,data,4);
 
 
   /* USER CODE END 2 */
@@ -137,8 +115,9 @@ int data[] ={150,170};
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  xl430_getSpeed(1);
-	  HAL_Delay(2000);
+	 /* xl430_getSpeed(1);
+	  xl430_getSpeed(2);
+	  HAL_Delay(2000);*/
 
 
 
