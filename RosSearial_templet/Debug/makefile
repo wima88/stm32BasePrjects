@@ -1,5 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
+# Toolchain: GNU Tools for STM32 (9-2020-q2-update)
 ################################################################################
 
 -include ../makefile.init
@@ -8,10 +9,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
--include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3/subdir.mk
--include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/subdir.mk
--include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
 -include Drivers/STM32F1xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
@@ -47,6 +44,12 @@ endif
 
 -include ../makefile.defs
 
+OPTIONAL_TOOL_DEPS := \
+$(wildcard ../makefile.defs) \
+$(wildcard ../makefile.init) \
+$(wildcard ../makefile.targets) \
+
+
 BUILD_ARTIFACT_NAME := RosSearial_templet
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX := 
@@ -73,22 +76,22 @@ all: main-build
 main-build: RosSearial_templet.elf secondary-outputs
 
 # Tool invocations
-RosSearial_templet.elf: $(OBJS) $(USER_OBJS) C:\Users\Wimansha\STM32CubeIDE\workspace_1.3.0\RosSearial_templet\STM32F103C8TX_FLASH.ld
-	arm-none-eabi-g++ -o "RosSearial_templet.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\Wimansha\STM32CubeIDE\workspace_1.3.0\RosSearial_templet\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RosSearial_templet.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+RosSearial_templet.elf: $(OBJS) $(USER_OBJS) C:\Users\Wimansha\Documents\GitHub\stm32BasePrjects\RosSearial_templet\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "RosSearial_templet.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\Wimansha\Documents\GitHub\stm32BasePrjects\RosSearial_templet\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RosSearial_templet.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-default.size.stdout: $(EXECUTABLES)
+default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-size  $(EXECUTABLES)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-RosSearial_templet.list: $(EXECUTABLES)
+RosSearial_templet.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "RosSearial_templet.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-RosSearial_templet.bin: $(EXECUTABLES)
+RosSearial_templet.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "RosSearial_templet.bin"
 	@echo 'Finished building: $@'
 	@echo ' '

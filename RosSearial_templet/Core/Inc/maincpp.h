@@ -13,8 +13,16 @@
  extern "C" {
 #endif
 
+#include "xl430.h"
+#include "stm32f1xx_hal.h"
+#include "main.h"
+
+
+
 void setup(void);
-void loop(void);
+
+void StartDefaultTask(void *argument);
+void setup_dummy(void);
 
 #ifdef __cplusplus
 }
