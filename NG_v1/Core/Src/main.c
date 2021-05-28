@@ -101,7 +101,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  //HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+	  HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
 	  loop();
 
     /* USER CODE END WHILE */
