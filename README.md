@@ -8,5 +8,5 @@ contains several templet projects for stm32
   * upon a sucsessfull transmiton pb7 shoud toggle in 1Hz
 
 #File Structure
- *NG_v1 -> stm32f7source code 
- *src-> catkin file system runs on sbc
+ * NG_v1 -> stm32f7source code 
+ * src-> catkin file system runs on sbc
