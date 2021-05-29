@@ -1,8 +1,8 @@
-# stm32BasePrjects
-contains several projects for stm32 
-* dynamixcel_lib
-  * this project is to create a lite foot print library to control dynamixcel xl430 lib. contains seperate UART interface for debug masg and main communication line contains Halfduplex UART with DMA
-
-
-* ROS_Searial
-  * communication node for the ROS wich comunicate with IMU and Dynamixcel servo. project uses f1 mcu with I2c and multiple uart
+# stm32BasePrjects 
+ In this branch
+contains several templet projects for stm32 
+* NG_v1 
+  * this is a minimal setup for the rosSearial package in order to provide stable conection via UART3
+  * stm32f746g was used 
+  * pb6,pb7 used as basic diagnose outputs
+  * upon a sucsessfull transmiton pb7 shoud toggle in 1Hz
