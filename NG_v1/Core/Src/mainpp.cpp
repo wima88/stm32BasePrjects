@@ -33,6 +33,8 @@ void setup(void)
 	while(!nh.connected()) //wait until connection established
 	{
 		nh.spinOnce();
+		HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
+		HAL_Delay(50);
 	}
 
 	while(! nh.advertise(chatter)) // wait until  advertise
@@ -49,7 +51,12 @@ void loop(void)
   HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
   str_msg.data = hello;
   chatter.publish(&str_msg);
+
+  if(!nh.connected())
+  {
+	  setup();
+  }
   nh.spinOnce();
-  HAL_Delay(1000);
+  HAL_Delay(500);
 }
 
