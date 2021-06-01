@@ -7,8 +7,8 @@ contains several projects for stm32
  * GPIO
    * alternate function open drain 
    * pull up      
-  *in xl430.c @line 15 change dma name acordingly
-  *in xl430.h @line 15 and 16 change .h files acordingly to match mcu 
+  * in xl430.c @line 15 change dma name acordingly
+  * in xl430.h @line 15 and 16 change .h files acordingly to match mcu 
 
 
 * ROS_Searial
