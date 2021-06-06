@@ -111,7 +111,15 @@ void loop(void)
   HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
   str_msg.data = hello;
   chatter.publish(&str_msg);
-  speed_msg.linear.x = 1.254;
+  motor_info[0] = xl430_getSpeed(1); //right side
+  motor_info[1] = xl430_getSpeed(2); //left side
+
+  float vth = (motor_info[0].data - motor_info[1].data) / _roverBase_width;
+  	float vx = (motor_info[1].data + motor_info[0].data) / 2;
+
+  	speed_msg.linear.x =vx;
+  	speed_msg.angular.z = vth;
+
   endr_pub.publish(&speed_msg);
 
  // xl430_writeMotorSpeeds(100,50);
