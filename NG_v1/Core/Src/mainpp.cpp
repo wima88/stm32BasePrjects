@@ -18,11 +18,17 @@
 
 //ros variables
 ros::NodeHandle nh;
+char hello[] = "Hello world!";
+
 std_msgs::String str_msg;
 ros::Publisher chatter("chatter", &str_msg);
-char hello[] = "Hello world!";
-char ros_msg[64] ;
-geometry_msgs::Twist wheelFeedback_msgs;
+
+
+geometry_msgs::Twist speed_msg;
+ros::Publisher endr_pub("speed", &speed_msg);
+
+void cmd_velCallBack(const geometry_msgs::Twist& velInfo);
+ros::Subscriber<geometry_msgs::Twist> _sub("/cmd_vel", &cmd_velCallBack);
 
 //bot variables
 float _roverBase_width =0.75;
@@ -44,11 +50,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
   nh.getHardware()->reset_rbuf();
 }
 
-void cmd_velCallBack(const geometry_msgs::Twist& velInfo);
 
-//subscribers and publishers
-ros::Publisher wheelFeedback_pub("wheelFeedback", &wheelFeedback_msgs);
-ros::Subscriber<geometry_msgs::Twist> _sub("/cmd_vel", &cmd_velCallBack);
 
 void setup(void)
 {
@@ -64,6 +66,11 @@ void setup(void)
 	//publishers
 	nh.loginfo("advertising publishers");
 	while(! nh.advertise(chatter)) // wait until  advertise
+	{
+		nh.spinOnce();
+	}
+
+	while(! nh.advertise(endr_pub)) // wait until  advertise
 	{
 		nh.spinOnce();
 	}
@@ -104,6 +111,8 @@ void loop(void)
   HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
   str_msg.data = hello;
   chatter.publish(&str_msg);
+  speed_msg.linear.x = 1.254;
+  endr_pub.publish(&speed_msg);
 
  // xl430_writeMotorSpeeds(100,50);
 

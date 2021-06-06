@@ -35,7 +35,7 @@
 #ifndef ROS_STM32_HARDWARE_H_
 #define ROS_STM32_HARDWARE_H_
 
-#define STM32F3xx  // Change for your device
+#define STM32F7xx  // Change for your device
 #ifdef STM32F3xx
 #include "stm32f7xx_hal.h"
 #include "stm32f7xx_hal_uart.h"
